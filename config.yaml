@@ -80,10 +80,10 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: pic01.jpg
+      - image: about_me.jpg
         subtitle: A short summary of my life up to this point! Actively living to collect material for future additions.
         title: About me
-        url: blogs/aliquam
+        url: blogs/about_me
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
         title: Tempus
