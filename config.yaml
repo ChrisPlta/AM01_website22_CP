@@ -68,9 +68,9 @@ params:
     links:
       - name: Home
         url: '#'
-      - name: Blogs
+      - name: About me
         url: blogs
-      - name: Generic Blog
+      - name: My Work
         url: blogs/ipsum
       - name: Elements
         url: elements.html
@@ -81,8 +81,8 @@ params:
     enable: yes
     showcase:
       - image: pic01.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Aliquam
+        subtitle: A short summary of my life up to this point! Actively living to collect material for future additions.
+        title: About me
         url: blogs/aliquam
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
