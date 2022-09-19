@@ -83,7 +83,7 @@ params:
       - image: about_me.jpg
         subtitle: A short summary of my life up to this point! Actively living to collect material for future additions.
         title: About me
-        url: personal/about_me
+        url: fun_stuff/about_me
       - image: spotify.jpg
         subtitle: Ever wonder why a song pops up in your feed, seemingly at random? In this post, we discover the information spotify stores on its songs and whether they indicate a song´s popularity.
         title: What makes a song popular on Spotify? 
