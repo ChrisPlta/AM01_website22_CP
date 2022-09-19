@@ -61,10 +61,10 @@ params:
   navigation:
     button1:
       - name: Download my CV
-        url: CV/ChristophPlachutta_CV
+        url: CV/ChristophPlachutta_CV.pdf
     button2:
-      - name: Log In
-        url: '#'
+      - name: My Guilty Pleasure
+        url: https://youtu.be/mdTCMDCMV7c
     links:
       - name: Home
         url: '#'
