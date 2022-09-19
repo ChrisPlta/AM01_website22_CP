@@ -8,7 +8,7 @@ params:
   banner:
     buttonText: Dive in
     subtitle: |-
-      If you are seeking a place to loose yourself for hours on end, look no further! On this website, you can learn more about myself, my experience, and some other fun tidbits to explore!
+      If you are seeking a place to loose yourself for hours on end, look no further! On this website, you can learn more about myself and my work.
     title: "Hello there, I am Christoph!\r\nWelcome to my Domain!"
   blog: {}
   contact:
@@ -90,21 +90,21 @@ params:
         title: What makes a song popular on Spotify? 
         url: blogs/spotify
       - image: climate_change.jpg
-        subtitle: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But apart from listening to millions of different media claims, let us look at the data ourselves!
+        subtitle: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But rathern than listening to millions of different media claims, let us look at the data ourselves!
         title: Climate change - hoax or fact?
         url: blogs/climate_change
-      - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
-        title: Ipsum
-        url: blogs/ipsum
-      - image: pic05.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Consequat
-        url: blogs/ipsum
-      - image: pic06.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Etiam
-        url: blogs/ipsum
+      - image: animal_rescue.jpg
+        subtitle: Have you ever watched one of those "Animal Fail Compilation" videos on Youtube, where cats miss the ledge after leaping or horses run headfirst into a wired fence?  I always wondered what happened to these animals after the video cut. I therefore took a look at some animal rescue data from the London Fire Brigade.
+        title: SOS - My horse is stuck on a tree!
+        url: blogs/animal_rescue
+      - image: omega_paygap.jpg
+        subtitle: If you have watched any of the latest James Bond movies, you might have noticed 007 sporting a lovely Omega watch. While it is an expensive accessory, surely his female co-agents can afford it just the same. But what about the employees at Omega? Do they receive equal pay?
+        title: What is the sigma at Omega?
+        url: blogs/omega_paygap
+    #  - image: pic06.jpg
+   #     subtitle: Feugiat Amet Tempus
+    #    title: Etiam
+     #   url: blogs/ipsum
   two:
     buttonText: Keep Reading
     enable: yes
