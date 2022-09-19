@@ -9,7 +9,7 @@ params:
     buttonText: Dive in
     subtitle: |-
       If you are seeking a place to loose yourself for hours on end, look no further! On this website, you can learn more about myself, my experience, and some other fun tidbits to explore!
-    title: "Hello there, I am Christoph!\nWelcome to my Domain!"
+    title: "Hello there, I am Christoph!\r\nWelcome to my Domain!"
   blog: {}
   contact:
     address:
@@ -108,8 +108,8 @@ params:
   two:
     buttonText: Keep Reading
     enable: yes
-    subtitle: "Still haven't had your fill? Don't worry, there is more for you to discover. By clicking the button below, you will have access to the entire range of my work!\n
-    As I am still new to the world of data science, please be patient while I build up my portfolio. I will always have the latest posts on the landing page for you to stay up to date.\n
+    subtitle: "Still haven't had your fill? Don't worry, there is more for you to discover. By clicking the button below, you will have access to the entire range of my work!\r\n
+    As I am still new to the world of data science, please be patient while I build up my portfolio. I will always have the latest posts on the landing page for you to stay up to date.\r\n
     If you have any wishes for future analysis you would like me to look into, please use the form below to submit them. I am looking forward to hearing your ideas!"
     title: MORE CONTENT
     url: blogs
