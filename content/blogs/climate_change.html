@@ -1,0 +1,196 @@
+---
+categories:  
+- ""
+- ""
+date: "2022-09-11"
+description: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But apart from listening to millions of different media claims, let us look at the data ourselves! # the title that will show up once someone gets to this page
+draft: false
+image: climate_change.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: climate_change # slug is the shorthand URL address... no spaces plz
+title: Climate Change - Hoax or Fact?
+---
+
+
+
+<pre class="r"><code>weather &lt;- 
+  read_csv(&quot;https://data.giss.nasa.gov/gistemp/tabledata_v4/NH.Ts+dSST.csv&quot;, 
+           skip = 1, 
+           na = &quot;***&quot;)</code></pre>
+<pre class="r"><code># Select only year and month data from the weather data set
+weather_clean &lt;- weather %&gt;% 
+  select(1:13)
+  
+# Convert dataframe from wide to long format
+tidyweather &lt;- weather_clean %&gt;% 
+  pivot_longer(cols = 2:13,
+               names_to = &quot;month&quot;,
+               values_to = &quot;delta&quot;) %&gt;% 
+  rename(&quot;year&quot; = &quot;Year&quot;)</code></pre>
+<div id="plotting-information" class="section level2">
+<h2>Plotting Information</h2>
+<p>Let us plot the data using a time-series scatter plot, and add a
+trendline. To do that, we first need to create a new variable called
+<code>date</code> in order to ensure that the <code>delta</code> values are plot
+chronologically.</p>
+<pre class="r"><code># Add date column to dataframe
+tidyweather &lt;- tidyweather %&gt;%
+  mutate(date = ymd(paste(as.character(year), month, &quot;1&quot;)),
+         month = month(date, label = TRUE),
+         year = year(date))
+tidyweather</code></pre>
+<pre><code>## # A tibble: 1,716 × 4
+##     year month delta date      
+##    &lt;dbl&gt; &lt;ord&gt; &lt;dbl&gt; &lt;date&gt;    
+##  1  1880 Jan   -0.39 1880-01-01
+##  2  1880 Feb   -0.53 1880-02-01
+##  3  1880 Mar   -0.23 1880-03-01
+##  4  1880 Apr   -0.3  1880-04-01
+##  5  1880 May   -0.05 1880-05-01
+##  6  1880 Jun   -0.18 1880-06-01
+##  7  1880 Jul   -0.21 1880-07-01
+##  8  1880 Aug   -0.25 1880-08-01
+##  9  1880 Sep   -0.24 1880-09-01
+## 10  1880 Oct   -0.3  1880-10-01
+## # … with 1,706 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
+<pre class="r"><code># Plot scatterplot of delta over time with best fit line
+ggplot(tidyweather, aes(x=date, y = delta))+
+  geom_point(alpha = 0.3)+
+  geom_smooth(color=&quot;red&quot;) +
+  theme_bw() +
+  labs (
+    title = &quot;Weather Anomalies&quot;,
+    x = &quot;Date&quot;,
+    y = &quot;Delta&quot;)</code></pre>
+<p><img src="/blogs/climate_change_files/figure-html/scatter_plot-1.png" width="768" style="display: block; margin: auto;" /></p>
+<blockquote>
+<p>Is the effect of increasing temperature more pronounced in some months?</p>
+</blockquote>
+<p>The graph below shows that in the period between October and March, we can observe a slightly steeper increase in temperatures than for the remaining months. Especially February and March clearly exhibit the highest delta in recent years. We can hypothesize that the more significant increase in temperature is linked to snowfall. We would expect snowfall in many countries of the Northern Hemisphere during that time, which might have a cooling effect on temperatures. As temperatures increase over time, less snowfall is expected and temperatures rise more drastically compared to the base period. in which snowfall was still more common. Of course, such a claim would have to be investigated further through hypothesis testing.</p>
+<p>Use <code>facet_wrap()</code> to produce a separate scatter plot for each month,
+again with a smoothing line. Your chart should human-readable labels;
+that is, each month should be labeled “Jan”, “Feb”, “Mar” (full or
+abbreviated month names are fine), not <code>1</code>, <code>2</code>, <code>3</code>.</p>
+<p><img src="/blogs/climate_change_files/figure-html/facet_wrap-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>We remove data before 1881 and before using <code>filter</code>. Then, we use the
+<code>mutate</code> function to create a new variable <code>interval</code> which contains
+information on which period each observation belongs to. We can assign
+the different periods using <code>case_when()</code>.</p>
+<pre class="r"><code>comparison &lt;- tidyweather %&gt;% 
+  filter(year &gt;= 1881) %&gt;% # remove years prior to 1881
+  # Create new variable &#39;interval&#39;, and assign values based on criteria below:
+  mutate(interval = case_when(
+    year %in% c(1881:1920) ~ &quot;1881-1920&quot;,
+    year %in% c(1921:1950) ~ &quot;1921-1950&quot;,
+    year %in% c(1951:1980) ~ &quot;1951-1980&quot;,
+    year %in% c(1981:2010) ~ &quot;1981-2010&quot;,
+    TRUE ~ &quot;2011-present&quot;
+  ))</code></pre>
+<p>Now that we have the <code>interval</code> variable, we can create a density plot
+to study the distribution of monthly deviations (<code>delta</code>), grouped by
+the different time periods we are interested in. Set <code>fill</code> to
+<code>interval</code> to group and colour the data by different time periods.</p>
+<pre class="r"><code># Create density plot separated by all time periods
+comparison %&gt;% 
+  ggplot(aes(x = delta, fill = interval)) +
+    geom_density(alpha = 0.3) + # Change alpha to make lines more visible
+    theme_bw() +
+    labs(title = &quot;The average weather deviation is increasing from period to period&quot;, 
+           subtitle = &quot;Distribution of weather deviations by period&quot;,
+           x = &quot;Delta&quot;,
+           y = &quot;Distribution&quot;)</code></pre>
+<p><img src="/blogs/climate_change_files/figure-html/density_plot-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>So far, we have been working with monthly anomalies. However, we might
+be interested in average annual anomalies. We can do this by using
+<code>group_by()</code> and <code>summarise()</code>, followed by a scatter plot to display
+the result.</p>
+<pre class="r"><code># Creating yearly averages
+average_annual_anomaly &lt;- tidyweather %&gt;% 
+  group_by(year) %&gt;%   # Grouping data by Year
+  # Creating summaries for mean delta 
+  # Use `na.rm=TRUE` to eliminate NA (not available) values 
+  summarise(anl_mean_delta = mean(delta), na.rm = TRUE) 
+
+# Create a scatterplot of the annual mean delta over years
+average_annual_anomaly %&gt;% 
+  ggplot(aes(x = year, y = anl_mean_delta)) +
+  geom_point() +
+  geom_smooth() +
+  theme_bw() +
+  labs(title = &quot;Climate in the Northern Hemisphere has been increasing exponentially since 1960&quot;, 
+           subtitle = &quot;Development of annual weather deviations from 1881 to 2022&quot;,
+           x = &quot;Years&quot;,
+           y = &quot;Average Annual Delta&quot;)</code></pre>
+<p><img src="/blogs/climate_change_files/figure-html/averaging-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="confidence-interval-for-delta" class="section level2">
+<h2>Confidence Interval for <code>delta</code></h2>
+<p><a href="https://earthobservatory.nasa.gov/world-of-change/decadaltemp.php">NASA points out on their
+website</a>
+that</p>
+<blockquote>
+<p>A one-degree global change is significant because it takes a vast
+amount of heat to warm all the oceans, atmosphere, and land by that
+much. In the past, a one- to two-degree drop was all it took to plunge
+the Earth into the Little Ice Age.</p>
+</blockquote>
+<p>We construct a confidence interval for the average annual
+delta since 2011, both using a formula and using a bootstrap simulation
+with the <code>infer</code> package. Recall that the dataframe <code>comparison</code> has
+already grouped temperature anomalies according to time intervals; we
+are only interested in what is happening between 2011-present.</p>
+<pre class="r"><code># Create confidence interval per year since 2011 with the formula
+formula_ci &lt;- comparison %&gt;%
+  # Choose the interval 2011-present
+  filter(interval == &quot;2011-present&quot;) %&gt;% 
+  # Remove NA values in 2022 to compute summary statistics and CI
+  drop_na() %&gt;% 
+  # Calculate mean, SD, count, SE, lower/upper 95% CI
+  summarise(mean_delta = mean(delta),
+            median_delta = median(delta),
+            sd_delta = sd(delta),
+            count = n(),
+            t_critical = qt(0.975, count-1),
+            se_delta = sd_delta/sqrt(count),
+            margin_of_error = t_critical * se_delta,
+            delta_low = mean_delta - margin_of_error,
+            delta_high = mean_delta + margin_of_error,)
+
+# Print out formula_ci
+formula_ci</code></pre>
+<pre><code>## # A tibble: 1 × 9
+##   mean_delta median_delta sd_delta count t_cri…¹ se_de…² margi…³ delta…⁴ delta…⁵
+##        &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1       1.07         1.05    0.265   140    1.98  0.0224  0.0443    1.02    1.11
+## # … with abbreviated variable names ¹​t_critical, ²​se_delta, ³​margin_of_error,
+## #   ⁴​delta_low, ⁵​delta_high</code></pre>
+<pre class="r"><code># Set seed for reproducibility
+set.seed(1234)
+
+delta_2011_bootstrap &lt;- comparison %&gt;% 
+  # Choose the interval 2011-present
+  filter(interval == &quot;2011-present&quot;) %&gt;%
+  # Specify the variable of interest
+  specify(response = delta) %&gt;%
+  # Generate bootstrap samples
+  generate(reps = 1000, type = &quot;bootstrap&quot;) %&gt;%
+  # Find the mean of each sample
+  calculate(stat = &quot;mean&quot;)
+
+# Create the confidence interval of bootstrapped samples
+bootstrap_ci &lt;- delta_2011_bootstrap %&gt;% 
+  get_confidence_interval(level = 0.95, type = &quot;percentile&quot;)
+
+# Print out bootstrap_ci
+bootstrap_ci</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   lower_ci upper_ci
+##      &lt;dbl&gt;    &lt;dbl&gt;
+## 1     1.02     1.11</code></pre>
+<blockquote>
+<p>What is the data showing us?</p>
+</blockquote>
+<p>Looking at the 95% confidence interval constructed with either formulas or the infer package, we observe identical values for the interval min and max values. To create the confidence interval with the formula approach, we started by filtering for the time period of interest and removed the months for which we do not yet have data in 2022. We then proceeded to calculate the summary statistics mean, median, standard deviation and count to set the basis for our confidence interval. As mean and median are very similar, we can assume a normal distribution of values. Given the sample size of 139, we have a t_critical value rather close to 1.96 (the t_critical for the bootleg approach will be even closer, given the sample size of 1000). We used the <code>qt()</code>function with a confidence level of 95%, deducting 1 from the count to represent the degree of freedom. As we want to make assertions about the population with the confidence interval, we calculate the standard error and margin of error. By deducting and adding the margin of error to the mean in turn, we are able to develop both the min and max margin of the two-sided confidence interval. The resulting min and max values enable us to claim with a 95% confidence that the temperature in the Northern Hemisphere was between 1.02 and 1.11 degrees Celsius higher since 2011 than the baseline temperature (1951 to 1980). This implies that even at the minimum value of our confidence interval, we would surpass the critical threshold of 1 degree change as defined by NASA. Perhaps climate change is not a <a href="https://www.forbes.com/sites/markjoyella/2022/03/21/on-fox-donald-trump-calls-climate-change-a-hoax-in-the-1920s-they-were-talking-about-global-freezing/">hoax</a> after all.</p>
+</div>
