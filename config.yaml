@@ -19,7 +19,7 @@ params:
         title: Address
     buttonClear: Clear
     buttonSend: Send message
-    email:
+    email: 
       - email: cplachutta.mam2023@london.edu
         title: Email
     enable: yes
@@ -85,12 +85,14 @@ params:
         title: About me
         url: fun_stuff/about_me
       - image: spotify.jpg
-        subtitle: Ever wonder why a song pops up in your feed, seemingly at random? In this post, we discover the information spotify stores on its songs and whether they indicate a song´s popularity.
+        subtitle: Ever wonder why a song pops up in your feed, seemingly at random? In this post, we discover the information spotify stores on its songs and
+        whether they indicate a song´s popularity.
         title: What makes a song popular on Spotify? 
         url: blogs/spotify
-      - image: pic03.jpg
-        subtitle: Lorem Etiam Nullam
-        title: Magna
+      - image: climate_change.jpg
+        subtitle: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But apart from 
+        listening to millions of different media claims, let us look at the data ourselves!
+        title: Climate Change - Hoax or Fact?
         url: blogs/magna
       - image: pic04.jpg
         subtitle: Nisl Sed Aliquam
