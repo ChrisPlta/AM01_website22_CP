@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2022-09-19"
-description: What makes a song popular on Spotify? # the title that will show up once someone gets to this page
+description: Ever wonder why a song pops up in your feed, seemingly at random? In this post, we discover the information spotify stores on its songs and whether they indicate a song´s popularity. # the title that will show up once someone gets to this page
 draft: false
 image: spotify.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
 
