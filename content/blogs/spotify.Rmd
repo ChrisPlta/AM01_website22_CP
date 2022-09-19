@@ -1,0 +1,190 @@
+---
+categories:  
+- ""
+- ""
+date: "2022-09-19"
+description: What makes a song popular on Spotify? # the title that will show up once someone gets to this page
+draft: false
+image: spotify.jpg # save picture in \static\img\blogs. Acceptable formats= jpg, jpeg, or png . Your iPhone pics wont work
+
+keywords: ""
+slug: spotify # slug is the shorthand URL address... no spaces plz
+title: What makes a song popular on Spotify?
+---
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+knitr::opts_chunk$set(
+  fig.width=8, 
+  fig.height=6,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(dplyr)
+library(ggplot2)
+```
+
+Spotify
+
+```{r, download_spotify_data}
+# Download and assign spotifyr data to variable
+spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv')
+
+
+```
+
+The data dictionary can be found below
+
+| **variable**             | **class** | **description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|------------------|------------------|-------------------------------------|
+| track_id                 | character | Song unique ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| track_name               | character | Song Name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| track_artist             | character | Song Artist                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| track_popularity         | double    | Song Popularity (0-100) where higher is better                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| track_album_id           | character | Album unique ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| track_album_name         | character | Song album name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| track_album_release_date | character | Date when album released                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| playlist_name            | character | Name of playlist                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| playlist_id              | character | Playlist ID                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| playlist_genre           | character | Playlist genre                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| playlist_subgenre        | character | Playlist subgenre                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| danceability             | double    | Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.                                                                                                                                                                                                                                                                       |
+| energy                   | double    | Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale. Perceptual features contributing to this attribute include dynamic range, perceived loudness, timbre, onset rate, and general entropy.                                                                                                                          |
+| key                      | double    | The estimated overall key of the track. Integers map to pitches using standard Pitch Class notation . E.g. 0 = C, 1 = C♯/D♭, 2 = D, and so on. If no key was detected, the value is -1.                                                                                                                                                                                                                                                                                                                            |
+| loudness                 | double    | The overall loudness of a track in decibels (dB). Loudness values are averaged across the entire track and are useful for comparing relative loudness of tracks. Loudness is the quality of a sound that is the primary psychological correlate of physical strength (amplitude). Values typical range between -60 and 0 db.                                                                                                                                                                                       |
+| mode                     | double    | Mode indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived. Major is represented by 1 and minor is 0.                                                                                                                                                                                                                                                                                                                                                    |
+| speechiness              | double    | Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks. |
+| acousticness             | double    | A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.                                                                                                                                                                                                                                                                                                                                                                                       |
+| instrumentalness         | double    | Predicts whether a track contains no vocals. "Ooh" and "aah" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly "vocal". The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.                                                                                                                 |
+| liveness                 | double    | Detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live. A value above 0.8 provides strong likelihood that the track is live.                                                                                                                                                                                                                                                                                            |
+| valence                  | double    | A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).                                                                                                                                                                                                                                                                  |
+| tempo                    | double    | The overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.                                                                                                                                                                                                                                                                                                                         |
+| duration_ms              | double    | Duration of song in milliseconds                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+
+Produce a one-page summary describing this dataset.
+
+```{r, skim_spotifyr_data}
+# Skim the spotifyr data
+skimr::skim(spotify_songs)
+
+```
+
+The data analysed is provided as part of the spotifyr package, created by Charlie Thompson, Josiah Parry, Donal Phipps and Tom Wolff. The data set is a selected collection of songs found on the Spotify platform. Descriptive data is provided for each of the songs, ranging from generic information such as the name of the artist to more detailed analysis, for example the tempo of the track. While we can expect data such as the name of the track to be factual observations, variables such as energy or acousticness are most likely generated through an algorithm that labels the songs according to certain parameters. This means we can expect a certain margin of error in the audio features.
+
+It makes sense to first look at the popularity_index of the songs listed in the dat aset, as we can identify several concerns regarding the reliability of that data. A quick glimpse at the first couple of rows lets us deduct that several songs are repeated. This can be due to several reasons:
+
+-   The same song from the same album is repeated from different playlists
+-   The same song is repeated from different albums
+-   The song was remastered or exists as an extended version
+
+As the popularity_index is listed according to the track_id, there are no discrepancies between two copies of a song with the same track_id, even if listed from different playlists. While it make sense to remove these duplicates, it does not seem to significantly affect the distribution of values. However, when the same song is taken from different albums, the track_id and thus the popularity_index varies. An example would be Eminem´s "'Till I Collapse", where one track has a popularity_index of 16 and the other 83. Both listed versions are from the album "Curtain Call", which is in fact uploaded twice on Spotify. It can be argued that it makes sense to only keep the highest rated version of the song, but we can expect the true popularity of the song to be higher if all the listeners of the less popular version were added to the more popular version. While this adjustment also does not significantly alter the distribution, it allows us to better judge the true popularity of individual songs. It should also be noted that since not all versions of a song might be listed in the data set, we cannot safely determine the popularity of individual songs or artists as a whole. The Kiss song "Almost Human" from the album "Ikons" is listed with a popularity of 0. By visiting the website [musicstax](musicstax.com), we can see that the same song from the album "Love Gun" enjoys a much higher popularity, but is not listed in the data. As for songs with extended or remastered versions, keeping both versions seems reasonable. In fact, it would be interesting to analyse the impact of releasing a remastered version of a song on its popularity. For this, a more complete data set would be useful to properly determine a correlation.
+
+As we graph the data on a histogram, we see that the popularity_index generally follows a normal distribution. This is to be expected, as the popularity_index is calculated based on factors such as stream, save and share count **RELATIVE** to other artists. The exception is the very high number of songs with a popularity_index of 0. Whether this is due to these songs being little to non-listened to duplicates or songs from lesser known artists is not discernible. In case of the latter, it is a good indicator of the competitiveness in the music industry, where many songs or artists never gain traction with their work. The spike at a value of 50 is also rather curious and should be investigated further.
+
+```{r, investigate_spotifyr_popularity_index}
+
+# creating a histogram to observe the distribution (entire dataset)
+
+spotify_songs %>% 
+  ggplot(aes(x = track_popularity)) + 
+  geom_histogram(bins = 100) +
+  theme_bw() +
+  labs(title = "Distribution of songs by track_popularity",x="Track Popularity",y="Count")
+
+# Remove song duplicates
+
+unique_spotify_songs <- spotify_songs %>% 
+  group_by(track_name,track_artist) %>% 
+  summarize(max_track_popularity = max(track_popularity))
+
+# creating a histogram to observe the distribution (dataset without duplicates)
+
+unique_spotify_songs %>% 
+  ggplot(aes(x = max_track_popularity)) + 
+  geom_histogram(bins = 100) +
+  theme_bw() +
+  labs(title = "Distribution of songs by maximum track_popularity without duplicates",x="Track Popularity",y="Count")
+```
+
+Further interesting insights can be drawn when looking at the audio features of tracks in the data set. They allow us to gauge whether the majority of songs are, for example, rather energetic and can be used to determine if certain characteristics are correlated with the success of a song. By first inspecting the summary statistics of the audio features, we can already make predictions about the expected distributions. Depending on the value of the mean relative to the median, we can expect the distribution to be either normally distributed, left- or right-skewed. The standard deviation indicates the spread of the values from the mean. In our case, summary statistics are more telling for some audio features than for others. Mode, for example, is either labelled 0 or 1, so with only data on the extremes of the x axis, we will not see a normal distribution around the mean. In fact, the mean rather gives us a ratio of minor to major scale songs. For valence however, the mean and median are almost exactly the same, so we can assert a high likelihood of a normal distribution (confirmed in graphing the data). Overall, the summary statistics suggest that most audio features are either left- or right-skewed, some with long and others with short tails. Exceptions to this would for example be valence or tempo. It could be argued that this indicates a music industry standard for audio features, with fewer artists daring to stray further and further away to the other end of the audio features' scales.
+
+When we look at the graphs of the distribution of audio features, there are some curious events to notice. First of all, we can see a large number of outliers for loudness with low dB. While the low dB seems reasonable for tracks like "Peaceful Forest" by "The Sleep Specialist", rock songs can also be found among the more quiet outliers. On the other end of the spectrum, we find fewer and less extreme outliers. Nevertheless, the name "Raw Power" seems to be fitting for the loudest track. As for the distribution of tempo, there is a spike at around 120-130. After a little bit of research, it turns out that an [analysis](https://medium.com/@Spotify/groove-is-in-the-heart-matching-beats-per-minute-to-heart-rate-271a79b7f96a) conducted by Spotify in 2016 revealed similar results. Apparently, this specific BPM (Beats Per Minute) seems to be a popular standard in the music industry. Last but not least, valence deserves a mention as being closest to a normal distribution. It seems reasonable that most songs would on average be neither too negative or positive in nature. Of course there are the tracks at the extremes, providing music to both people with heartbreak and those that have just graduated. Personally, we can attest to the reliability of the metric, as the song with the highest valence "Low Rider" by "War" has never failed to brighten our mood.
+
+```{r, investigate_spotify_audio_features_distribution}
+
+# Look at the summary statistics of the data set
+
+summary(spotify_songs)
+
+# Select Spotify_song descriptors from data
+
+spotify_songs_descriptors <- spotify_songs %>% 
+  select(danceability:duration_ms)
+
+# Pivot Spotify song descriptor data
+
+spotify_songs_descriptors_pivot <- spotify_songs_descriptors %>% 
+  pivot_longer(colnames(spotify_songs_descriptors))
+
+# Plot distribution of Spotify song descriptors
+
+spotify_songs_descriptors_pivot %>% 
+  ggplot(aes(x = value)) +
+  geom_histogram() +
+  facet_wrap(~ name, scales = "free") +
+  theme_bw() +
+  labs(title="Distributions of audio features",subtitle = "Faceted histogram of audio features",x = "Value", y = "Number of Observations")
+
+# Create boxplot for loudness to spot outliers
+spotify_songs %>% 
+  ggplot(aes(x = loudness)) +
+  geom_boxplot() +
+  labs(title="Loudness has several outliers below the median volume",subtitle = "Boxplot of loudness audio feature",x = "Loudness")+
+  theme_bw()
+  
+```
+
+As with any kind of data analysis, it is interesting to determine relationships in the data. A simple correlation matrix lets us see whether certain audio features impact track_popularity or each other. First of all, we do not seem to have any significant correlation between audio features and track_popularity. This is good news, as it implies that artists can take complete liberty in the songs they produce, without negatively affecting their chance of success. Nevertheless, when we look at the average popularity by subgenre, we can observe certain subgenres like **hip hop** or **post-teen pop** to be more popular (this is based on the assumptions that the songs are correctly allocated to the respective playlist, hence playlist subgenre = song subgenre).
+
+Looking at relationships between audio features offers a different picture. Energy is related to loudness, which seems perfectly reasonable. This is also in line with the negative correlation between acousticness and energy. Most energy inducing tracks feature mostly electronic sounds, such as in rock or EDM music. Meanwhile, most of the other audio features seem to be unrelated to each other, implying that tracks generally come in all shapes and sizes. Thus, a musician can freely choose to record music in major or minor keys, without impacting the danceability or popularity of his or her work.
+
+In summary, the data provided by spotifyr provides some interesting insights into the music industry. Future analysis could focus on the effect of remastering a song on its popularity or the streaming patterns of the songs. For the latter, the right data would allow us to see at what time, where and under which circumstances the tracks are listened to. This would certainly provide an intriguing glimpse of the average Spotify user's behavior.
+
+```{r, calculate_spotifyr_correlations}
+# Determine the correlation between audio features and popularity_index
+
+spotify_songs %>% 
+  select(track_popularity,danceability:duration_ms) %>% 
+  cor()
+
+# Determine average popularity_index and count by subgenre
+
+spotify_songs %>% 
+  group_by(playlist_subgenre) %>% 
+  summarize(average_track_popularity = mean(track_popularity), count_of_subgenre = count(playlist_subgenre))
+
+# Determine effect of mode on danceability and track_popularity
+
+spotify_songs %>% 
+  group_by(mode) %>% 
+  summarize(average_track_popularity = mean(track_popularity), average_danceability = mean(danceability))
+
+```
+
