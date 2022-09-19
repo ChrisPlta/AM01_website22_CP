@@ -9,8 +9,10 @@ image: climate_change.jpg # save picture in \static\img\blogs. Acceptable format
 
 keywords: ""
 slug: climate_change # slug is the shorthand URL address... no spaces plz
-title: Climate Change - Hoax or Fact?
+title: Climate change - hoax or fact?
 ---
+
+Climate change has been a topic that has been following me around for as long as I can remember! It is arguably one of the biggest crisis of our time and a major threat to human civilization. Again and again we see major headlines in the newspaper, ranging from the entertaining that cows are essentially driving us to extinction with their [burps](https://www.pbs.org/newshour/show/cow-burps-are-a-major-contributor-to-climate-change-can-scientists-change-that), to climate activist Greta Thunberg throwing shade at [world leaders](https://www.youtube.com/watch?v=TMrtLsQbaok). While there is some very educational content out there ([Kurzgesagt](https://www.youtube.com/watch?v=wbR-5mHI6bo) has some great content on it), I figured I should take a look at the situation myself. With data provided by NASA on climate of the Northern Hemisphere for the last several years, I looked at whether there indeed is a global warming happening.
 
 ```{r, setup, echo=FALSE}
 knitr::opts_chunk$set(

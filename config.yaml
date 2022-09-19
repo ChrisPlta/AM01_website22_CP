@@ -91,8 +91,8 @@ params:
         url: blogs/spotify
       - image: climate_change.jpg
         subtitle: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But apart from listening to millions of different media claims, let us look at the data ourselves!
-        title: Climate Change - Hoax or Fact?
-        url: blogs/magna
+        title: Climate change - hoax or fact?
+        url: blogs/climate_change
       - image: pic04.jpg
         subtitle: Nisl Sed Aliquam
         title: Ipsum
