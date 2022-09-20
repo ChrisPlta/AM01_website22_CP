@@ -28,7 +28,7 @@ Given my [family´s business](https://www.plachutta.at/), I also had significant
 Although it being a catchy song, *Another Brick in the Wall* did not turn out to be true for me: I did need some education. Given that I spent my entire childhood in Vienna, I cycled through quite a number of schools until my graduation (*4 in total*). This was not because I was struggling, I was actually always quite academically talented, but rather because each school provided a unique benefit. I transferred from my first middle school to an international school after barely half a year so as to **improve my English**. Once I reached high-school age, I transferred yet again, this time to a school focusing on the **hospitality and tourism sector**. There, I had a day every week dedicated to practical subjects focusing on cooking, restaurant service and beverages, next to my regular courses. While I learned a lot, it did mean that my high school education lasted an additional year and I spent my summers doing internships. I graduated in the summer of 2016 and was even selected to hold my classes graduation speech, which was well received by all the students and **most** of the faculty.
 
 ```{r, echo = FALSE}
-knitr::include_graphics("/img/high_school_picture.jpg",error=FALSE)
+knitr::include_graphics("/img/about_me_post/high_school_picture.jpg",error=FALSE)
 ```
 
 ## SIR, YES, SIR
@@ -38,7 +38,7 @@ Graduating school did not mean relaxation. Just two weeks after receiving my dip
 Disciplined and a military service medal richer, it was now time to head to my bachelor´s studies. I chose **École hôtelière de Lausanne** for my undergraduate education, in line with my background and education so far. While the name might suggest a heavy focus on the hotel industry, it was really a management/economics degree, with some classes including specifics on the hospitality industry. It was a truly an enjoyable time. The school was very international, which allowed me to establish a decent network and secure friendships with people around the globe. The faculty proved to be very knowledgeable and the classes engaging, especially as most assessments were project rather than test based. Life outside the classroom was centered around a plethora of student committees. They organised several events, most notably **fête universelle** (*a big event for students to present local traditions from their countries of origin in individual stalls*) and **fête finale** (*the graduation party for every intake, marked by a specific theme*). For the later, I even managed to land on the school´s official Instagram page, although rather incognito. Can you guess the theme?
 
 ```{r, echo = FALSE}
-knitr::include_graphics("/img/fête_finale_picture.jpg",error=FALSE)
+knitr::include_graphics("/img/about_me_post/fête_finale_picture.jpg",error=FALSE)
 ```
 
 I graduated in February 2020 after a total of 3 years. Instead of a thesis, the school asked students to complete a consulting report for external companies in groups of six. This proved to be a great transition into the working world, especially as I would eventully end up working in consulting.
