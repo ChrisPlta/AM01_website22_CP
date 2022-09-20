@@ -93,6 +93,10 @@ params:
         subtitle: Ever wonder why a song pops up in your feed, seemingly at random? In this post, we discover the information spotify stores on its songs and whether they indicate a song´s popularity.
         title: What makes a song popular on Spotify? 
         url: blogs/spotify
+      - image: omega_paygap.jpg
+        subtitle: If you have watched any of the latest James Bond movies, you might have noticed 007 sporting a lovely Omega watch. While it is an expensive accessory, surely his female co-agents can afford it just the same. But what about the employees at Omega? Do they receive equal pay?
+        title: What is the sigma at Omega?
+        url: blogs/omega_paygap
       - image: climate_change.jpg
         subtitle: A topic discussed even more than whether Mark Zuckerberg is indeed a lizard, climate change poses a threat to the entire world. But rathern than listening to millions of different media claims, let us look at the data ourselves!
         title: Climate change - hoax or fact?
@@ -101,10 +105,6 @@ params:
         subtitle: Have you ever watched one of those "Animal Fail Compilation" videos on Youtube, where cats miss the ledge after leaping or horses run headfirst into a wired fence?  I always wondered what happened to these animals after the video cut. I therefore took a look at some animal rescue data from the London Fire Brigade.
         title: SOS - My horse is stuck on a tree!
         url: blogs/animal_rescue
-      - image: omega_paygap.jpg
-        subtitle: If you have watched any of the latest James Bond movies, you might have noticed 007 sporting a lovely Omega watch. While it is an expensive accessory, surely his female co-agents can afford it just the same. But what about the employees at Omega? Do they receive equal pay?
-        title: What is the sigma at Omega?
-        url: blogs/omega_paygap
   two:
     buttonText: Keep Reading
     enable: yes
